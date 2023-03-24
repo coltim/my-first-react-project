@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import TerminatorList from './components/terminator-list/terminator-list.component';
+import { models } from './models';
+import SearchBox from './components/searchbox/searchbox.coponent';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      models: models,
+      searchField: '',
+    };
+  }
+
+  onSearchChange = (event) => {
+    this.setState({ searchField: event.target.value });
+  };
+
+  render() {
+    const filteredModels = this.state.models.filter((model) => {
+      return model.name
+        .toLowerCase()
+        .includes(this.state.searchField.toLowerCase());
+    });
+    return (
+      <div className="tc">
+        <h1>Terminator modellek</h1>
+        <SearchBox searchChange={this.onSearchChange} />
+        <TerminatorList models={filteredModels} />
+      </div>
+    );
+  }
 }
-
 export default App;
